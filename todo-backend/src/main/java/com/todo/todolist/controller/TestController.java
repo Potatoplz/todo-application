@@ -1,5 +1,9 @@
 package com.todo.todolist.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todo.todolist.dto.ResponseDTO;
 import com.todo.todolist.dto.TestRequestBodyDTO;
 
 /**
@@ -61,4 +66,33 @@ public class TestController {
 	public String testControllerWithRequestBody(@RequestBody TestRequestBodyDTO testRequestBodyDTO) {
 		return "Hello World! ID " + testRequestBodyDTO.getId() + " Message : " + testRequestBodyDTO.getMessage();
 	}
+	
+	/**
+	 * ResponseDTO를 반환하는 컨트롤러 메서드
+	 */
+	@GetMapping("/testResponseBody")
+	public ResponseDTO<String> testControllerResponseBody() {
+		List<String> list = new ArrayList<>();
+		list.add("안녕..난 ResponseDTO야..");
+		ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
+		return response;
+	}
+
+	/**
+	 * ResponseEntity를 반환하는 컨트롤러 메서드
+	 * - HTTP 응답 바디뿐만아니라, 여러 다른 매개변수(status, header)를 조작할 때 사용
+	 */
+	@GetMapping("/testResponseEntity")
+	public ResponseEntity<?> testControllerResponseEntity() {
+		List<String> list = new ArrayList<>();
+		list.add("안녕...난 ResponseEntity야. 그리고 넌 400!");
+		ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
+
+		// http status를 200으로 설정
+		// return ResponseEntity.ok().body(response);
+
+		// http status를 400로 설정.
+		return ResponseEntity.badRequest().body(response);
+	}	
+	
 }

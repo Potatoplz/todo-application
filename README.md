@@ -1,5 +1,5 @@
 ### Todo-Application
 
 ```
-./gradlew bootRun
+$ ./gradlew bootRun
 ```

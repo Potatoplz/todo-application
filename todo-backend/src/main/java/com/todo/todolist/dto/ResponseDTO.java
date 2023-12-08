@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * HTTP 응답으로 사용할 DTO
- * - 다른 모델의 DTO오 ResponseDTO를 이용해 리턴할 수 있도록 자바 Generic 사용
+ * - 다른 모델의 DTO도 ResponseDTO를 이용해 리턴할 수 있도록 자바 Generic 사용
  */
 
 @Builder
