@@ -62,5 +62,13 @@ public class TodoService {
 		// userId로 select한 새Todo리스트 반환
 		return repository.findByUserId(entity.getUserId());
 	}
+	
+	// Retrieve
+	public List<TodoEntity> retrieve(final String userId) {
+		
+		log.info("User Id : {} is retrieved.", userId);
+		
+		return repository.findByUserId(userId);
+	}
 
 }
