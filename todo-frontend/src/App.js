@@ -36,12 +36,30 @@ function App() {
     console.log("items 업데이트 후 : ", items);
   };
 
+  /**
+   * 삭제 함수
+   * 기존 items에서 매개변수로 넘어온 item을 제외한 새 items를 items 변수에 다시 저장하는 것
+   * @param {Object} selectedItem - 유저가 삭제하려고 선택한 아이템
+   */
+  const deleteItem = (selectedItem) => {
+    /**
+     * filter함수로 현재 할일 목록 배열을 순회하며,
+     * currentItemList.id !== selectedItem.id인 조건을 찾아 newItems에 저장한다.
+     * currentItemList : 현재 할일 목록
+     */
+    const newItems = items.filter(
+      (currentItemList) => currentItemList.id !== selectedItem.id
+    );
+    // 삭제할 아이템을 제외한 아이템을 다시 배열에 저장한다.
+    setItems([...newItems]);
+  };
+
   // 할 일 목록을 표시하는 부분
   let todoItems = items.length > 0 && (
     <Paper style={{ margin: 16 }}>
       <List>
         {items.map((item) => (
-          <Todo item={item} key={item.id} /> // 각 할 일을 Todo 컴포넌트로 렌더링
+          <Todo item={item} key={item.id} deleteItem={deleteItem} /> // 각 할 일을 Todo 컴포넌트로 렌더링
         ))}
       </List>
     </Paper>
