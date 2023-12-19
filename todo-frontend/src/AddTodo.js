@@ -5,7 +5,7 @@ import { Button, Grid, TextField } from "@mui/material";
 const AddTodo = (props) => {
   // 사용자의 입력을 저장할 오브젝트
   const [item, setItem] = useState({ title: "" });
-  const addItem = props.addItem;
+  const addItem = props.addItem; // props로 부모컴포넌트(App.js)의 함수를 넘겨받아서 해당 함수를 사용할 수 있다.
   //console.log("addItem >>>", addItem);
 
   /**
@@ -30,6 +30,18 @@ const AddTodo = (props) => {
     setItem({ title: "" });
   };
 
+  /**
+   * 엔터키 처리를 위한 핸들러
+   * Enter 키 입력을 감지하면 onButtonClick() 함수를 실행한다.
+   * onKeyPress(이벤트 핸들링 메커니즘에 속하는 이벤트 중 하나)와 연결한다.
+   * @param {Event} e - 이벤트 객체 e를 매개변수로 받는다. e.key를 확인하여 사용자가 누른 키가 "Enter"인지 판별
+   */
+  const enterKeyEventHandler = (e) => {
+    if (e.key === "Enter") {
+      onButtonClick();
+    }
+  };
+
   return (
     <Grid container style={{ marginTop: 20 }}>
       <Grid xs={11} md={11} item style={{ paddingRight: 16 }}>
@@ -37,6 +49,7 @@ const AddTodo = (props) => {
           placeholder="Add Todo here"
           fullWidth
           onChange={onInputChange}
+          onKeyPress={enterKeyEventHandler}
           value={item.title}
           /**
            * value={item.title}
