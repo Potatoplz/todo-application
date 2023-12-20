@@ -8,18 +8,14 @@ import AddTodo from "./AddTodo";
 // App 컴포넌트 정의
 function App() {
   // 할 일 목록을 상태로 관리하기 위한 useState 훅
-  const [items, setItems] = useState([
-    {
-      id: "0",
-      title: "Hello World 1",
-      done: true,
-    },
-    {
-      id: "1",
-      title: "Hello World 2",
-      done: false,
-    },
-  ]);
+  const [items, setItems] = useState([]);
+  //const [items, setItems] = useState([
+  //  {
+  //    id: "0",
+  //    title: "Hello World 1",
+  //    done: true,
+  //  },
+  //]);
 
   /**
    * addItem 함수의 매개변수(item)는 AddTodo.js에서 받음.
@@ -31,9 +27,7 @@ function App() {
     item.done = false; // 새 항목의 완료 상태 초기화
 
     // items 상태를 업데이트하기 위해 setItems 사용
-    console.log("items 업데이트 전 : ", items);
     setItems([...items, item]); // 기존 items에 새 item 추가
-    console.log("items 업데이트 후 : ", items);
   };
 
   /**
@@ -54,12 +48,23 @@ function App() {
     setItems([...newItems]);
   };
 
+  // 리스트 수정 함수
+  const editItem = () => {
+    console.log("editItem >>>", ...items);
+    setItems([...items]);
+  };
+
   // 할 일 목록을 표시하는 부분
   let todoItems = items.length > 0 && (
     <Paper style={{ margin: 16 }}>
       <List>
         {items.map((item) => (
-          <Todo item={item} key={item.id} deleteItem={deleteItem} /> // 각 할 일을 Todo 컴포넌트로 렌더링
+          <Todo
+            item={item}
+            key={item.id}
+            editItem={editItem}
+            deleteItem={deleteItem}
+          /> // 각 할 일을 Todo 컴포넌트로 렌더링
         ))}
       </List>
     </Paper>

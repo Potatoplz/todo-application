@@ -12,7 +12,10 @@ import DeleteOutlined from "@mui/icons-material/DeleteOutlined";
 
 const Todo = (props) => {
   const [item, setItem] = useState(props.item);
+  const [readOnlyState, setReadOnly] = useState(true);
+
   const deleteItem = props.deleteItem; // App.js에서 props로 받아온 deleteItem()함수
+  const editItem = props.editItem; // App.js에서 props로 받아온 editItem()함수
 
   /**
    * deleteEventHandler 함수
@@ -25,12 +28,42 @@ const Todo = (props) => {
     deleteItem(item);
   };
 
+  // 사용자의 키입력에 따라 title을 변경해주는 함수
+  const editEventHandler = (e) => {
+    item.title = e.target.value;
+    editItem(item);
+  };
+
+  // turnOffReadOnly() : readOnlyState라는 상태를 false로 변경해주는 함수
+  const turnOffReadOnly = () => {
+    setReadOnly(false);
+  };
+
+  // turnOnReadOnly() : 엔터키 입력시 readOnlyState라는 상태를 true로 변경해주는 함수
+  const turnOnReadOnly = (e) => {
+    if (e.key === "Enter") {
+      setReadOnly(true);
+    }
+  };
+
+  // 체크박스
+  const checkboxEventHandler = (e) => {
+    item.done = e.target.checked;
+    editItem();
+  };
+
   return (
     <ListItem>
-      <Checkbox checked={item.done} />
+      <Checkbox checked={item.done} onChange={checkboxEventHandler} />
       <ListItemText>
         <InputBase
-          inputProps={{ "aria-label": "naked" }}
+          inputProps={{
+            "aria-label": "naked",
+            readOnly: readOnlyState, // material-ui에서 제공하는 props로 생성한 readOnly를 넘겨준다. true: 마우스 커서 깜빡임
+          }}
+          onClick={turnOffReadOnly}
+          onKeyDown={turnOnReadOnly}
+          onChange={editEventHandler}
           type="text"
           id={item.id}
           name={item.id}
@@ -38,6 +71,19 @@ const Todo = (props) => {
           multiline={true}
           fullWidth={true}
         />
+        {/*
+				<input
+          aria-label="naked"
+          readOnly={readOnlyState}
+          onClick={turnOffReadOnly}
+          onKeyDown={turnOnReadOnly}
+          onChange={editEventHandler}
+          type="text"
+          id={item.id}
+          name={item.id}
+          value={item.title}
+        />
+				*/}
       </ListItemText>
       <ListItemSecondaryAction>
         <IconButton aria-label="Delete Todo" onClick={deleteEventHandler}>
