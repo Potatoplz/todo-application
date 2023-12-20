@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, List, Paper } from "@mui/material";
 
 import "./App.css";
@@ -9,13 +9,32 @@ import AddTodo from "./AddTodo";
 function App() {
   // 할 일 목록을 상태로 관리하기 위한 useState 훅
   const [items, setItems] = useState([]);
-  //const [items, setItems] = useState([
-  //  {
-  //    id: "0",
-  //    title: "Hello World 1",
-  //    done: true,
-  //  },
-  //]);
+
+  useEffect(() => {
+    console.log("useEffect 실행 - 컴포넌트 마운트됨");
+
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+
+    console.log("API 호출 시작");
+    fetch("http://localhost:8080/todo", requestOptions)
+      .then((response) => response.json())
+      .then(
+        (response) => {
+          console.log("API 호출 성공", response);
+          setItems(response.data);
+        },
+        (error) => {
+          console.log("API 호출 에러", error);
+        }
+      );
+
+    return () => {
+      console.log("useEffect 종료 - 컴포넌트 언마운트됨");
+    };
+  }, []);
 
   /**
    * addItem 함수의 매개변수(item)는 AddTodo.js에서 받음.
