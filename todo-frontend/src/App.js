@@ -56,9 +56,12 @@ function App() {
   };
 
   // 리스트 수정 함수
-  const editItem = () => {
-    console.log("editItem >>>", ...items);
-    setItems([...items]);
+  const editItem = (item) => {
+    console.log("editItem 1 >>>", item);
+    //console.log("editItem 2 >>>", ...items);
+    //setItems([...items]);
+
+    call("/todo", "PUT", item).then((response) => setItems(response.data));
   };
 
   // 할 일 목록을 표시하는 부분

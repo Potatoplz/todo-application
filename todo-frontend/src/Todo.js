@@ -30,8 +30,11 @@ const Todo = (props) => {
 
   // 사용자의 키입력에 따라 title을 변경해주는 함수
   const editEventHandler = (e) => {
+    /*
     item.title = e.target.value;
     editItem(item);
+		*/
+    setItem({ ...item, title: e.target.value });
   };
 
   // turnOffReadOnly() : readOnlyState라는 상태를 false로 변경해주는 함수
@@ -41,15 +44,16 @@ const Todo = (props) => {
 
   // turnOnReadOnly() : 엔터키 입력시 readOnlyState라는 상태를 true로 변경해주는 함수
   const turnOnReadOnly = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && readOnlyState === false) {
       setReadOnly(true);
+      editItem(item);
     }
   };
 
   // 체크박스
   const checkboxEventHandler = (e) => {
     item.done = e.target.checked;
-    editItem();
+    editItem(item);
   };
 
   return (
