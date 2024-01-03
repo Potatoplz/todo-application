@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Container, List, Paper } from "@mui/material";
 
+import { call } from "./service/ApiService";
+
 import "./App.css";
 import Todo from "./Todo";
 import AddTodo from "./AddTodo";
@@ -11,29 +13,7 @@ function App() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    console.log("useEffect 실행 - 컴포넌트 마운트됨");
-
-    const requestOptions = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-
-    console.log("API 호출 시작");
-    fetch("http://localhost:8080/todo", requestOptions)
-      .then((response) => response.json())
-      .then(
-        (response) => {
-          console.log("API 호출 성공", response);
-          setItems(response.data);
-        },
-        (error) => {
-          console.log("API 호출 에러", error);
-        }
-      );
-
-    return () => {
-      console.log("useEffect 종료 - 컴포넌트 언마운트됨");
-    };
+    call("/todo", "GET", null).then((response) => setItems(response.data));
   }, []);
 
   /**
@@ -42,11 +22,15 @@ function App() {
    * @param {Object} item - item이라는 객체를 매개변수로 받는다. item은 AddTodo.js에서 +버튼 클릭시 전달된다.
    */
   const addItem = (item) => {
+    /*
     item.id = "ID-" + items.length; // 새 항목에 고유 ID 생성
     item.done = false; // 새 항목의 완료 상태 초기화
 
     // items 상태를 업데이트하기 위해 setItems 사용
     setItems([...items, item]); // 기존 items에 새 item 추가
+		*/
+
+    call("/todo", "POST", item).then((response) => setItems(response.data));
   };
 
   /**
@@ -59,12 +43,16 @@ function App() {
      * filter함수로 현재 할일 목록 배열을 순회하며,
      * currentItemList.id !== selectedItem.id인 조건을 찾아 newItems에 저장한다.
      * currentItemList : 현재 할일 목록
-     */
     const newItems = items.filter(
       (currentItemList) => currentItemList.id !== selectedItem.id
     );
     // 삭제할 아이템을 제외한 아이템을 다시 배열에 저장한다.
     setItems([...newItems]);
+     */
+
+    call("/todo", "DELETE", selectedItem).then((response) =>
+      setItems(response.data)
+    );
   };
 
   // 리스트 수정 함수
