@@ -55,3 +55,8 @@ export function signout() {
   localStorage.setItem("ACCESS_TOKEN", null);
   window.location.href = "/login";
 }
+
+export function signup(userDTO) {
+  console.log("signup userDTO", userDTO);
+  return callAPI("/auth/signup", "POST", userDTO);
+}

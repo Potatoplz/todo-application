@@ -20,10 +20,14 @@ import AddTodo from "./AddTodo";
 function App() {
   // 할 일 목록을 상태로 관리하기 위한 useState 훅
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     callAPI("/todo", "GET", null)
-      .then((response) => setItems(response.data))
+      .then((response) => {
+        setItems(response.data);
+        setLoading(false);
+      })
       .catch((error) => {
         // catch로 에러처리 안하면 화면에 에러화면이 뜨는군....
         console.log("App.js >>>", error);
@@ -112,9 +116,9 @@ function App() {
     </AppBar>
   );
 
-  // 렌더링 부분
-  return (
-    <div className="App">
+  // 리스트 페이지
+  let todoListPage = (
+    <div>
       {navigationBar}
       <Container maxWidth="md">
         <AddTodo addItem={addItem} /> {/*AddTodo 컴포넌트에 addItem 함수 전달*/}
@@ -122,6 +126,17 @@ function App() {
       </Container>
     </div>
   );
+
+  // 로딩중
+  let loadingPage = <h1> 로딩 중...</h1>;
+  let content = loadingPage;
+
+  if (!loading) {
+    content = todoListPage;
+  }
+
+  // 렌더링 부분
+  return <div className="App">{content}</div>;
 }
 
 export default App;
