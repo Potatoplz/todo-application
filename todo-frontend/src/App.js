@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Container, List, Paper } from "@mui/material";
+import {
+  Container,
+  List,
+  Paper,
+  Grid,
+  Button,
+  AppBar,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
-import { callAPI } from "./service/ApiService";
+import { callAPI, signout } from "./service/ApiService";
 
 import "./App.css";
 import Todo from "./Todo";
@@ -85,9 +94,28 @@ function App() {
     </Paper>
   );
 
+  // navigationBar 추가
+  let navigationBar = (
+    <AppBar position="static">
+      <Toolbar>
+        <Grid justifyContent="space-between" container>
+          <Grid item>
+            <Typography variant="h6">오늘의 할일</Typography>
+          </Grid>
+          <Grid item>
+            <Button color="inherit" raised onClick={signout}>
+              로그아웃
+            </Button>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
+  );
+
   // 렌더링 부분
   return (
     <div className="App">
+      {navigationBar}
       <Container maxWidth="md">
         <AddTodo addItem={addItem} /> {/*AddTodo 컴포넌트에 addItem 함수 전달*/}
         <div className="TodoList">{todoItems}</div> {/*할 일 목록 렌더링*/}
