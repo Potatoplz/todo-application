@@ -3,6 +3,7 @@ package com.todo.todolist.controller;
 import com.todo.todolist.dto.ResponseDTO;
 import com.todo.todolist.dto.UserDTO;
 import com.todo.todolist.model.UserEntity;
+import com.todo.todolist.security.TokenProvider;
 import com.todo.todolist.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> resisterUser(@RequestBody UserDTO userDTO) {
@@ -51,4 +55,29 @@ public class UserController {
         }
     }
 
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
+        UserEntity user = userService.getByCredentials(
+                userDTO.getUsername(),
+                userDTO.getPassword());
+
+        if (user != null) {
+            // 토큰 생성
+            final String token = tokenProvider.create(user);
+
+            final UserDTO responseUserDTO = UserDTO.builder()
+                    .username(user.getUsername())
+                    .id(user.getId())
+                    .token(token)
+                    .build();
+            return ResponseEntity.ok().body(responseUserDTO);
+        } else {
+            ResponseDTO responseDTO = ResponseDTO.builder()
+                    .error("Login failed.")
+                    .build();
+            return ResponseEntity
+                    .badRequest()
+                    .body(responseDTO);
+        }
+    }
 }
