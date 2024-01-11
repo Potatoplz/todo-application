@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 //인증 완료; SecurityContextHolder에 등록해야 인증된 사용자라고 생각한다.
                 // UsernamePasswordAuthenticationToken : 이 오브젝트에 인증 정보 저장하고, SecurityContext에 인증된 사용자를 등록
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userId, // 인증된 유저 정보. 보통 UserDetails라는 오브젝트를 넣는다.
+                        userId, // 인증된 유저 정보. 보통 UserDetails라는 오브젝트를 넣는다.(@AuthenticationPrincipal String userId)
                         null,
                         AuthorityUtils.NO_AUTHORITIES
                 );
