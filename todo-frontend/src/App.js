@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, List, Paper } from "@mui/material";
 
-import { call } from "./service/ApiService";
+import { callAPI } from "./service/ApiService";
 
 import "./App.css";
 import Todo from "./Todo";
@@ -13,7 +13,12 @@ function App() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    call("/todo", "GET", null).then((response) => setItems(response.data));
+    callAPI("/todo", "GET", null)
+      .then((response) => setItems(response.data))
+      .catch((error) => {
+        // catch로 에러처리 안하면 화면에 에러화면이 뜨는군....
+        console.log("App.js >>>", error);
+      });
   }, []);
 
   /**
@@ -30,7 +35,7 @@ function App() {
     setItems([...items, item]); // 기존 items에 새 item 추가
 		*/
 
-    call("/todo", "POST", item).then((response) => setItems(response.data));
+    callAPI("/todo", "POST", item).then((response) => setItems(response.data));
   };
 
   /**
@@ -50,7 +55,7 @@ function App() {
     setItems([...newItems]);
      */
 
-    call("/todo", "DELETE", selectedItem).then((response) =>
+    callAPI("/todo", "DELETE", selectedItem).then((response) =>
       setItems(response.data)
     );
   };
@@ -61,7 +66,7 @@ function App() {
     //console.log("editItem 2 >>>", ...items);
     //setItems([...items]);
 
-    call("/todo", "PUT", item).then((response) => setItems(response.data));
+    callAPI("/todo", "PUT", item).then((response) => setItems(response.data));
   };
 
   // 할 일 목록을 표시하는 부분

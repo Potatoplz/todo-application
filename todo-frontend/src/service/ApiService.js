@@ -2,7 +2,7 @@
 
 import { API_BASE_URL } from "../api-config";
 
-export function call(api, method, request) {
+export function callAPI(api, method, request) {
   let options = {
     headers: new Headers({
       "Content-Type": "application/json",
@@ -18,6 +18,11 @@ export function call(api, method, request) {
     .then((response) => {
       if (response.status === 200) {
         return response.json();
+      } else if (response.status === 403) {
+        window.location.href = "/login"; // redirect
+      } else {
+        Promise.reject(response);
+        throw Error(response);
       }
     })
     .catch((error) => {
