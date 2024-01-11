@@ -30,7 +30,7 @@ export function callAPI(api, method, request) {
       } else if (response.status === 403) {
         window.location.href = "/login"; // redirect
       } else {
-        new Error(response);
+        return response.json();
       }
     })
     .catch((error) => {
@@ -47,6 +47,8 @@ export function signin(userDTO) {
 
       // token이 존재하는 경우, Todo 화면으로 리다이렉트
       window.location.href = "/";
+    } else {
+      alert(response.error);
     }
   });
 }

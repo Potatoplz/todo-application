@@ -28,13 +28,14 @@ function Login() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
+              autoComplete="username"
+              name="username"
               variant="outlined"
               required
               fullWidth
               id="username"
               label="아이디"
-              name="username"
-              autoComplete="username"
+              autoFocus
             />
           </Grid>
           <Grid item xs={12}>
@@ -42,9 +43,10 @@ function Login() {
               variant="outlined"
               required
               fullWidth
-              id="password"
-              label="패스워드"
               name="password"
+              label="패스워드"
+              type="password"
+              id="password"
               autoComplete="current-password"
             />
           </Grid>

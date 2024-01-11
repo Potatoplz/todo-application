@@ -16,11 +16,12 @@ function SignUp() {
     const data = new FormData(event.target);
     const username = data.get("username");
     const password = data.get("password");
+
     signup({ username: username, password: password })
       .then((response) => {
-        //alert("회원가입 성공!");
+        alert("회원가입 성공!");
         // 계정 생성 성공시 login 페이지로 리다이렉트
-        //window.location.href = "/login";
+        window.location.href = "/login";
       })
       .catch((error) => {
         console.log("회원가입 에러", error);
@@ -38,7 +39,7 @@ function SignUp() {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              autoComplete="fname"
+              autoComplete="username"
               name="username"
               variant="outlined"
               required
